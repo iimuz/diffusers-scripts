@@ -11,12 +11,23 @@ lastmod: 2023-09-17
 ### Text to Image
 
 ```sh
-# `data/processed/{date-folder}`に画像が生成される
+# `data/processed/text2img/{date-folder}`に画像が生成される
 # CPU実行の場合
 $ python src/text2img.py "a photo of an astronaut riding a horse on mars."
 
 # CUDA実行の場合
 $ python src/text2img.py --device=cuda "a photo of an astronaut riding a horse on mars."
+```
+
+### Text to Image (SDXL)
+
+```sh
+# `data/processed/text2img-sdxl/{date-folder}`に画像が生成される
+# CPU実行の場合
+$ python src/text2img-sdxl.py "a photo of an astronaut riding a horse on mars."
+
+# CUDA実行の場合
+$ python src/text2img-sdxl.py --device=cuda "a photo of an astronaut riding a horse on mars."
 ```
 
 ## 環境構築
