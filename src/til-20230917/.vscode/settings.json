@@ -26,6 +26,6 @@
     "editor.formatOnSave": true,
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
-    "editor.rulers": [88] // pep8: 79, black: 88
+    "editor.codeActionsOnSave": { "source.organizeImports": true }
   }
 }
