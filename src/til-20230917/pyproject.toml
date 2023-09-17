@@ -12,6 +12,7 @@ dependencies = [
   "accelerate",
   "diffusers",
   "ftfy",
+  "pydantic",
   "torch",
   "transformers",
 ]
