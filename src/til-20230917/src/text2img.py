@@ -30,6 +30,7 @@ class _RunConfig(BaseModel):
 
     network_name: str  # 画像生成に利用するモデル名
     guidance_scale: float
+    num_inference_steps: int  # 生成ステップ数
     seed: int  # 画像生成に利用するシード
     device: _DeviceOption  # 利用するデバイス
 
@@ -91,7 +92,10 @@ def _main() -> None:
     generator = torch.Generator(config.device.value).manual_seed(config.seed)
     with torch.autocast(config.device.value):
         image = pipe(
-            config.prompt, guidance_scale=config.guidance_scale, generator=generator
+            config.prompt,
+            guidance_scale=config.guidance_scale,
+            generator=generator,
+            num_inference_steps=config.num_inference_steps,
         ).images[0]
 
     # 生成した画像の保存
@@ -110,7 +114,8 @@ def _parse_args() -> _RunConfig:
 
     parser.add_argument("-n", "--network-name", default="SD2.1", help="画像生成に利用するモデル名.")
     parser.add_argument("-g", "--guidance-scale", default=7.5, help="guidance scale.")
-    parser.add_argument("-s", "--seed", default=42, help="画像生成に利用するシード値.")
+    parser.add_argument("--seed", default=42, help="画像生成に利用するシード値.")
+    parser.add_argument("-s", "--num-inference-steps", default=50, help="画像生成のステップ数.")
     parser.add_argument(
         "--device",
         default=_DeviceOption.CPU.value,
