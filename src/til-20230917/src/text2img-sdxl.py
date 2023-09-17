@@ -4,14 +4,15 @@ import sys
 from argparse import ArgumentParser
 from datetime import datetime
 from enum import Enum
-from logging import Formatter, StreamHandler
-from logging.handlers import RotatingFileHandler
 from pathlib import Path
 from typing import Any
 
 import torch
 from diffusers import DiffusionPipeline
 from pydantic import BaseModel
+
+import internal.data_directory as data_directory
+import internal.log_settings as log_settings
 
 _logger = logging.getLogger(__name__)
 
@@ -55,25 +56,17 @@ def _main() -> None:
     config = _parse_args()
 
     # ログ設定
-    loglevel = {
-        0: logging.ERROR,
-        1: logging.WARNING,
-        2: logging.INFO,
-        3: logging.DEBUG,
-    }.get(config.verbose, logging.DEBUG)
+    loglevel = log_settings.get_loglevel_from_verbosity(config.verbose)
     script_filepath = Path(__file__)
-    log_filepath = (
-        Path("data/interim")
-        / script_filepath.parent.name
-        / f"{script_filepath.stem}.log"
-    )
+    log_filepath = data_directory.get_interim_dir() / f"{script_filepath.stem}.log"
     log_filepath.parent.mkdir(exist_ok=True)
-    _setup_logger(log_filepath, loglevel=loglevel)
+    log_settings.setup_lib_logger(log_filepath, loglevel=loglevel)
+    log_settings.setup_logger(_logger, log_filepath, loglevel=loglevel)
     _logger.info(config)
 
     # 画像の出力フォルダ
     output_dir = (
-        Path("data/processed")
+        data_directory.get_processed_dir()
         / script_filepath.stem
         / datetime.now().strftime(r"%Y%m%d-%H%M%S")
     )
@@ -98,7 +91,7 @@ def _main() -> None:
         config.prompt,
         guidance_scale=config.guidance_scale,
         generator=generator,
-        # num_inference_steps=config.num_inference_steps,
+        num_inference_steps=config.num_inference_steps,
     ).images[0]
 
     # 生成した画像の保存
@@ -136,53 +129,6 @@ def _parse_args() -> _RunConfig:
     config = _RunConfig(**vars(args))
 
     return config
-
-
-def _setup_logger(filepath: Path | None, loglevel: int) -> None:
-    """ロガー設定を行う.
-
-    Parameters
-    ----------
-    filepath : Path | None
-        ログ出力するファイルパス. Noneの場合はファイル出力しない.
-
-    loglevel : int
-        出力するログレベル.
-
-    Notes
-    -----
-    ファイル出力とコンソール出力を行うように設定する。
-    """
-    lib_logger = logging.getLogger("src.exp20230515")
-
-    _logger.setLevel(loglevel)
-    lib_logger.setLevel(loglevel)
-
-    # consoleログ
-    console_handler = StreamHandler()
-    console_handler.setLevel(loglevel)
-    console_handler.setFormatter(
-        Formatter("[%(levelname)7s] %(asctime)s (%(name)s) %(message)s")
-    )
-    _logger.addHandler(console_handler)
-    lib_logger.addHandler(console_handler)
-
-    # ファイル出力するログ
-    # 基本的に大量に利用することを想定していないので、ログファイルは多くは残さない。
-    if filepath is not None:
-        file_handler = RotatingFileHandler(
-            filepath,
-            encoding="utf-8",
-            mode="a",
-            maxBytes=10 * 1024 * 1024,  # 10 MB
-            backupCount=1,
-        )
-        file_handler.setLevel(loglevel)
-        file_handler.setFormatter(
-            Formatter("[%(levelname)7s] %(asctime)s (%(name)s) %(message)s")
-        )
-        _logger.addHandler(file_handler)
-        lib_logger.addHandler(file_handler)
 
 
 if __name__ == "__main__":
