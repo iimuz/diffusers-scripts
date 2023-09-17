@@ -1,5 +1,4 @@
 {
-  "editor.detectIndentation": true,
   // auto time stamp
   "lpubsppop01.autoTimeStamp.filenamePattern": ".md",
   "lpubsppop01.autoTimeStamp.lineLimit": 5,
@@ -13,10 +12,8 @@
   },
   // markdown
   "[markdown]": {
-    "editor.insertSpaces": true,
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
-    "editor.tabSize": 2
   },
   // python
   "autoDocstring.docstringFormat": "numpy",
@@ -24,8 +21,6 @@
   "[python]": {
     "editor.defaultFormatter": "ms-python.black-formatter",
     "editor.formatOnSave": true,
-    "editor.insertSpaces": true,
-    "editor.tabSize": 4,
     "editor.codeActionsOnSave": { "source.organizeImports": true }
   }
 }
