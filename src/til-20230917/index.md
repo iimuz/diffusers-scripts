@@ -57,3 +57,9 @@ $ pip freeze > requirements.txt
 $ pip install -e .[dev] -c requirements.txt --extra-index-url https://download.pytorch.org/whl/cu117
 $ pip freeze > requirements-dev.txt  # requirements.txtと同様に処理
 ```
+
+## Tips
+
+### モデルの保存場所
+
+hugging face のモデルを利用する場合は、`$HOME/.cache/huggingface/hub`にモデルが保存される。
