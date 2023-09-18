@@ -1,34 +1,19 @@
 ---
 title: Stable Diffusionの実行スクリプト
 date: 2023-09-17
-lastmod: 2023-09-17
+lastmod: 2023-09-19
 ---
 
 ## 概要
 
 ## 実行方法
 
-### Text to Image
+各スクリプトの実行方法は、スクリプトファイルの docstring に記載しています。
+以下は、実行を想定しているスクリプトのファイル名と、スクリプトの簡易説明のみ記載します。
+スクリプトのオプションは`python hoge.py -h`のようにしてオプションを出力して確認してください。
 
-```sh
-# `data/processed/text2img/{date-folder}`に画像が生成される
-# CPU実行の場合
-$ python src/text2img.py "a photo of an astronaut riding a horse on mars."
-
-# CUDA実行の場合
-$ python src/text2img.py --device=cuda "a photo of an astronaut riding a horse on mars."
-```
-
-### Text to Image (SDXL)
-
-```sh
-# `data/processed/text2img-sdxl/{date-folder}`に画像が生成される
-# CPU実行の場合
-$ python src/text2img-sdxl.py "a photo of an astronaut riding a horse on mars."
-
-# CUDA実行の場合
-$ python src/text2img-sdxl.py --device=cuda "a photo of an astronaut riding a horse on mars."
-```
+- test2img.py: Stable Diffusion v1.x, v2.x を利用した Text2Image の実行用スクリプトです。
+- test2img-sdxl.py: Stable Diffusion XL を利用した Text2Image の実行用スクリプトです。
 
 ## 環境構築
 

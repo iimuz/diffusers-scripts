@@ -1,4 +1,20 @@
-"""SDXLを利用してText2Imageを行うスクリプト."""
+"""SDXLを利用してText2Imageを行うスクリプト.
+
+Notes
+-----
+- `data/processed/text2img-sdxl/{date-folder}`に画像が生成される
+- CPU実行の場合
+
+    ```sh
+    $ python src/text2img-sdxl.py "a photo of an astronaut riding a horse on mars."
+    ```
+
+- CUDA実行の場合
+
+    ```sh
+    $ python src/text2img-sdxl.py --device=cuda "a photo of an astronaut."
+    ```
+"""
 import logging
 import sys
 from argparse import ArgumentParser

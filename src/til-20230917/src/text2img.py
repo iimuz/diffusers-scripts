@@ -1,4 +1,20 @@
-"""Text2Imageを行うスクリプト."""
+"""Text2Imageを行うスクリプト.
+
+Notes
+-----
+- `data/processed/text2img/{date-folder}`に画像が生成される
+- CPU実行の場合
+
+    ```sh
+    $ python src/text2img.py "a photo of an astronaut riding a horse on mars."
+    ```
+
+- CUDA実行の場合
+
+    ```sh
+    $ python src/text2img.py --device=cuda "a photo of an astronaut."
+    ```
+"""
 import logging
 import sys
 from argparse import ArgumentParser
